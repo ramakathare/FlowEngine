@@ -1,0 +1,21 @@
+$background-color : #222;
+$foreground-color:#fff;
+$general-margin:5px;
+$topHeight:50px;
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  height: $topHeight;
+  margin:$general-margin;
+}
+.App-footer {
+  margin:$general-margin;
+}
+
+
+.Display-None{
+  display:none;
+}
