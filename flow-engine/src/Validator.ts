@@ -1,10 +1,34 @@
+/** Validator to validate the object */
 export abstract class Validator {
+
+    /**To validate the rules object */
     static validateRules(obj:any){
         try{
             let objArr = obj as any[];
             var passed = true;
+            var usedIds:{
+                [key:string]:boolean
+            } = {};
             for(let item of objArr){
                 passed = true;
+
+                /** The true id or false id can not be equal to the current rule id */
+                if(item.id == item.true_id || item.id == item.false_id){
+                    passed = false;
+                    break;
+                }
+
+                /** If the true id or false id or not null but are equal to an rule d that has will execute before this rules fires */
+                if((item.true_id != null && usedIds[item.true_id]) || 
+                    (item.false_id != null && usedIds[item.false_id])) {
+                    passed=false;
+                    break;
+                }
+
+                /**store the previously used ids to check for circularity */
+                if(usedIds) usedIds[item.id] = true;
+
+                /** General validations for the properties */
                 if(!item.id || typeof item.id != "number") passed = false;
                 if(!item.body) return false;
                 var func = new Function('return ' + item.body)();
@@ -27,6 +51,7 @@ export abstract class Validator {
         }
         return passed;
     }
+    /**To validate the data object */
     static validateData(obj:any){
         try{
             let objArr = obj as any[];
@@ -46,38 +71,4 @@ export abstract class Validator {
         }
         return passed;
     }
-    
-    //     var a = [{
-    //         id: 1,
-    //     body: obj => { return obj.value; },
-    //     true_id: 2,
-    //     false_id: 2,
-    // },
-    // {
-    //     id: 2,
-    //     body: obj => { return obj.value; },
-    //     true_id: 3,
-    //     false_id: 4,
-    // },
-    // {
-    //     id: 3,
-    //     body: obj => { return obj.value; },
-    //     true_id: null,
-    //     false_id: null,
-    // }];
-
-    // static defaultData: IData[] = [
-    //     {
-    //         rule_id: 1,
-    //         data: { value: true }
-    //     },
-    //     {
-    //         rule_id: 2,
-    //         data: { value: true }
-    //     },
-    //     {
-    //         rule_id: 1,
-    //         data: { value: true }
-    //     }
-    // ]
 }

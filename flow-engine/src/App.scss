@@ -15,7 +15,16 @@ $topHeight:50px;
   margin:$general-margin;
 }
 
-
+.Containerdiv{
+  height:100%;
+}
 .Display-None{
   display:none;
+}
+.Text-Area{
+  width:100%;
+  height:99%;
+  font-family: 'Courier New';
+  font-weight: bold;
+  font-size: 20px;
 }
